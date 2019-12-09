@@ -6,6 +6,11 @@ import java.util.List;
 public class Enumerator {
   public List<Expression> allExpList = new LinkedList<>();
 
+  public List<Expression> getAllExpressions(List<Expression> expList) {
+    enumerateAll(expList);
+    return this.allExpList;
+  }
+
   public void enumerateAll(List<Expression> expList) {
     if (expList.size() == 1)
       allExpList.add(expList.get(0));
@@ -37,24 +42,15 @@ public class Enumerator {
     return result;
   }
 
-  public static int factorial(int n) {
-    if (n == 1)
-      return 1;
-    else
-      return n * factorial(n - 1);
-  }
-
   public static void main(String[] args) {
     Enumerator enumerator = new Enumerator();
 
     // Enumerate all valid expressions in 4-element 24 Point game
     int N = 4;
-    enumerator.enumerateAll(Arrays.asList(
+    List<Expression> expressionList = enumerator.getAllExpressions(Arrays.asList(
         new Var("A"), new Var("B"), new Var("C"), new Var("D")));
-    System.out.println(enumerator.allExpList);
-    System.out.println(enumerator.allExpList.size());
-    System.out.println(factorial(N) * (int) Math.pow(4, N - 1) * factorial(N - 1));
+    System.out.println(expressionList.size());
+    System.out.println(Utils.factorial(N).intValue() * (int) Math.pow(4, N - 1) * Utils.factorial(N - 1).intValue());
   }
-
 
 }
