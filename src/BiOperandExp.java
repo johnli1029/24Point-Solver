@@ -21,6 +21,7 @@ public class BiOperandExp extends Expression {
       case MULTIPLY:
         return leftVal * rightVal;
       case DIVISION:
+        if (rightVal / 1e-5 < 1) throw new ArithmeticException("Zero denominator");
         return leftVal / rightVal;
       default:
         throw new IllegalArgumentException("Unbound Variable");
