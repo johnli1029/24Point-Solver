@@ -10,7 +10,7 @@ public class Evaluation {
   }
 
   public static void main(String[] args) {
-    new Enumerator().getAllExpressions(Arrays.asList(
+    new PlainEnumerator().getAllExpressions(Arrays.asList(
         new Var("A"), new Var("B"), new Var("C"), new Var("D"))).stream()
         .filter(expression -> test(expression, 3, 3, 8, 8, 24))
         .forEach(expression -> System.out.println(expression + " = 24"));

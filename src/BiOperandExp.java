@@ -3,9 +3,22 @@ public class BiOperandExp extends Expression {
   Expression rightOperand;
 
   public BiOperandExp(Operator operator, Expression leftOperand, Expression rightOperand) {
+    this(0, 0, operator, leftOperand, rightOperand);
+  }
+
+  public BiOperandExp(int id, Operator operator, Expression leftOperand, Expression rightOperand) {
+    this(id, 0, operator, leftOperand, rightOperand);
+  }
+
+  public BiOperandExp(int id, int polar, Operator operator, Expression leftOperand, Expression rightOperand) {
+    super(id, polar);
     this.operator = operator;
     this.leftOperand = leftOperand;
     this.rightOperand = rightOperand;
+  }
+
+  public BiOperandExp(BiOperandExp another) {
+    this(another.id, another.polar, another.operator, another.leftOperand, another.rightOperand);
   }
 
   @Override
@@ -26,6 +39,11 @@ public class BiOperandExp extends Expression {
       default:
         throw new IllegalArgumentException("Unbound Variable");
     }
+  }
+
+  @Override
+  public Expression makeCopy() {
+    return new BiOperandExp(this);
   }
 
   @Override
