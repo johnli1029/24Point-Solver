@@ -1,6 +1,5 @@
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
 
 public class FullEnumerator {
@@ -69,13 +68,13 @@ public class FullEnumerator {
     }
 
     // MULTIPLY
-    if (expA.operator != Operator.MULTIPLY && expA.operator != Operator.DIVISION
+    if (expA.operator != Operator.PRODUCT && expA.operator != Operator.DIVISION
         && expB.operator != Operator.DIVISION
-        && (expB.operator != Operator.MULTIPLY || expA.id < ((BiOperandExp) expB).leftOperand.id)) {
+        && (expB.operator != Operator.PRODUCT || expA.id < ((BiOperandExp) expB).leftOperand.id)) {
       if (expA.polar == 0 || expB.polar == 0)
-        result.add(new BiOperandExp(Operator.MULTIPLY, expA, expB, expA.polar + expB.polar));
+        result.add(new BiOperandExp(Operator.PRODUCT, expA, expB, expA.polar + expB.polar));
       else if (expA.polar > 0)
-        result.add(new BiOperandExp(Operator.MULTIPLY, expA, expB, expB.polar));
+        result.add(new BiOperandExp(Operator.PRODUCT, expA, expB, expB.polar));
     }
 
     // DIVISION
@@ -95,20 +94,14 @@ public class FullEnumerator {
   }
 
   private static void display(List<Expression> allExpList) {
+    int i = 1;
     for (Expression exp : allExpList)
-      System.out.println(exp);
+      System.out.println(i++ + ": " + exp);
   }
 
   public static void main(String[] args) {
     FullEnumerator fullEnumerator = new FullEnumerator();
-
-    List<Expression> allExps = fullEnumerator.getAllExpressions(Arrays.asList(
-        new Var(0, "A"),
-        new Var(1, "B"),
-        new Var(2, "C"),
-        new Var(3, "D")));
-
+    List<Expression> allExps = fullEnumerator.getAllExpressions(Var.getVarList(4));
     display(allExps);
-    System.out.println(allExps.size());
   }
 }

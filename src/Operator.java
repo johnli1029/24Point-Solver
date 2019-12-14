@@ -9,7 +9,7 @@ public enum Operator {
     public String toString() {
       return "-";
     }
-  }, MULTIPLY {
+  }, PRODUCT {
     @Override
     public String toString() {
       return "*";
@@ -17,7 +17,7 @@ public enum Operator {
   }, DIVISION {
     @Override
     public String toString() {
-      return "/";
+      return String.valueOf((char) 0xF7);
     }
   }, VAR
 }

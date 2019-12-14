@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class PlainEnumerator {
     return ret;
   }
 
-  public void enumerate(List<Expression> expList) {
+  private void enumerate(List<Expression> expList) {
     if (expList.size() == 1) {
       allExpList.add(expList.get(0));
     } else {
@@ -39,7 +38,7 @@ public class PlainEnumerator {
 
   private List<Expression> combine(Expression expA, Expression expB) {
     List<Expression> result = new ArrayList<>();
-    for (Operator operator : new Operator[]{Operator.PLUS, Operator.MULTIPLY}) {
+    for (Operator operator : new Operator[]{Operator.PLUS, Operator.PRODUCT}) {
       result.add(new BiOperandExp(operator, expA, expB));
     }
 
@@ -50,16 +49,4 @@ public class PlainEnumerator {
 
     return result;
   }
-
-  public static void main(String[] args) {
-    PlainEnumerator plainEnumerator = new PlainEnumerator();
-
-    // Enumerate all valid expressions in 4-element 24 Point game
-    int N = 4;
-    List<Expression> expressionList = plainEnumerator.getAllExpressions(Arrays.asList(
-        new Var("A"), new Var("B"), new Var("C"), new Var("D")));
-    System.out.println(expressionList.size());
-    System.out.println(Utils.factorial(N).intValue() * (int) Math.pow(4, N - 1) * Utils.factorial(N - 1).intValue());
-  }
-
 }

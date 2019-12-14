@@ -1,6 +1,5 @@
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
 
 public class PlusMultiplyEnumerator {
@@ -40,23 +39,11 @@ public class PlusMultiplyEnumerator {
 
   private List<Expression> combine(Expression expA, Expression expB) {
     List<Expression> result = new ArrayList<>();
-    for (Operator operator : new Operator[]{Operator.PLUS, Operator.MULTIPLY}) {
+    for (Operator operator : new Operator[]{Operator.PLUS, Operator.PRODUCT}) {
       if (expA.operator != operator && (expB.operator != operator || expA.id < ((BiOperandExp) expB).leftOperand.id))
         result.add(new BiOperandExp(operator, expA, expB));
     }
 
     return result;
-  }
-
-  public static void main(String[] args) {
-    PlusMultiplyEnumerator plusMultiplyEnumerator = new PlusMultiplyEnumerator();
-
-    List<Expression> allExps = plusMultiplyEnumerator.getAllExpressions(Arrays.asList(
-        new Var(0, "A"),
-        new Var(1, "B"),
-        new Var(2, "C"),
-        new Var(3, "D")));
-
-    System.out.println(allExps.size());
   }
 }

@@ -1,19 +1,18 @@
-import java.util.Arrays;
-
 public class Evaluation {
-  public static boolean test(Expression exp, int a, int b, int c, int d, int expected) {
+  public static boolean test(Expression exp, int expectedVal, int... substitutions) {
     try {
-      return Math.abs(exp.evaluate(3, 3, 8, 8) - 24) / 24 < 1e-5;
+      return Math.abs(exp.evaluate(substitutions) - expectedVal) / expectedVal < 1e-5;
     } catch (ArithmeticException ignored) {
       return false;
     }
   }
 
   public static void main(String[] args) {
-    new PlainEnumerator().getAllExpressions(Arrays.asList(
-        new Var("A"), new Var("B"), new Var("C"), new Var("D"))).stream()
-        .filter(expression -> test(expression, 3, 3, 8, 8, 24))
-        .forEach(expression -> System.out.println(expression + " = 24"));
+    int[] substitutions = {32, 14, 18, 12, 2, 3, 5};
+    int expectedVal = 24;
 
+    new FullEnumerator().getAllExpressions(Var.getVarList(substitutions.length)).stream()
+        .filter(expression -> test(expression, expectedVal, substitutions))
+        .forEach(expression -> System.out.println(expression.toString(substitutions) + " = " + expectedVal));
   }
 }

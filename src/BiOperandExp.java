@@ -26,22 +26,22 @@ public class BiOperandExp extends Expression {
   }
 
   @Override
-  public double evaluate(int a, int b, int c, int d) {
-    double leftVal = leftOperand.evaluate(a, b, c, d);
-    double rightVal = rightOperand.evaluate(a, b, c, d);
+  public double evaluate(int... substitutions) {
+    double leftVal = leftOperand.evaluate(substitutions);
+    double rightVal = rightOperand.evaluate(substitutions);
 
     switch (operator) {
       case PLUS:
         return leftVal + rightVal;
       case MINUS:
         return leftVal - rightVal;
-      case MULTIPLY:
+      case PRODUCT:
         return leftVal * rightVal;
       case DIVISION:
         if (rightVal / 1e-5 < 1) throw new ArithmeticException("Zero denominator");
         return leftVal / rightVal;
       default:
-        throw new IllegalArgumentException("Unbound Variable");
+        throw new IllegalArgumentException("Illegal Operator.");
     }
   }
 
@@ -52,18 +52,30 @@ public class BiOperandExp extends Expression {
 
   @Override
   public String toString() {
-    boolean needLeftBracket = leftOperand.operator != Operator.VAR
-        && (operator == Operator.MULTIPLY || operator == Operator.DIVISION)
-        && (leftOperand.operator == Operator.PLUS || leftOperand.operator == Operator.MINUS);
-
-    boolean needRightBracket = rightOperand.operator != Operator.VAR
-        && ((operator == Operator.DIVISION)
-        || ((operator == Operator.MULTIPLY || operator == Operator.MINUS)
-        && (rightOperand.operator == Operator.PLUS || rightOperand.operator == Operator.MINUS)));
-
-    String left = needLeftBracket ? "(" + leftOperand + ")" : leftOperand.toString();
-    String right = needRightBracket ? "(" + rightOperand + ")" : rightOperand.toString();
+    String left = needLeftBracket() ? "(" + leftOperand + ")" : leftOperand.toString();
+    String right = needRightBracket() ? "(" + rightOperand + ")" : rightOperand.toString();
 
     return left + " " + this.operator + " " + right;
+  }
+
+  @Override
+  public String toString(int... substitutions) {
+    String left = needLeftBracket() ? "(" + leftOperand.toString(substitutions) + ")" : leftOperand.toString(substitutions);
+    String right = needRightBracket() ? "(" + rightOperand.toString(substitutions) + ")" : rightOperand.toString(substitutions);
+
+    return left + " " + this.operator + " " + right;
+  }
+
+  private boolean needLeftBracket() {
+    return leftOperand.operator != Operator.VAR
+        && (operator == Operator.PRODUCT || operator == Operator.DIVISION)
+        && (leftOperand.operator == Operator.PLUS || leftOperand.operator == Operator.MINUS);
+  }
+
+  private boolean needRightBracket() {
+    return rightOperand.operator != Operator.VAR
+        && ((operator == Operator.DIVISION)
+        || ((operator == Operator.PRODUCT || operator == Operator.MINUS)
+        && (rightOperand.operator == Operator.PLUS || rightOperand.operator == Operator.MINUS)));
   }
 }
