@@ -6,17 +6,21 @@ public class Var extends Expression {
   }
 
   public Var(int id, String varName) {
-    this(id, 0, varName);
+    this(id, varName, 0);
   }
 
-  public Var(int id, int polar, String varName) {
+  public Var(String varName, int polar) {
+    this(0, varName, polar);
+  }
+
+  public Var(int id, String varName, int polar) {
     super(id, polar);
     this.operator = Operator.VAR;
     this.varName = varName;
   }
 
   public Var(Var another) {
-    this(another.id, another.polar, another.varName);
+    this(another.id, another.varName, another.polar);
   }
 
   @Override

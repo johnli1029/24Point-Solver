@@ -44,25 +44,51 @@ public class FullEnumerator {
     // PLUS
     if (expA.operator != Operator.PLUS && expA.operator != Operator.MINUS
         && expB.operator != Operator.MINUS
-        && (expB.operator != Operator.PLUS || expA.id < ((BiOperandExp) expB).leftOperand.id))
-      result.add(new BiOperandExp(Operator.PLUS, expA, expB));
+        && (expB.operator != Operator.PLUS || expA.id < ((BiOperandExp) expB).leftOperand.id)) {
+      int polar;
+      if (expA.polar == 0 && expB.polar == 0)
+        polar = 0;
+      else if (expA.polar == 0 || expB.polar == 0)
+        polar = 1;
+      else
+        polar = expB.polar;
+      result.add(new BiOperandExp(Operator.PLUS, expA, expB, polar));
+    }
 
     // MINUS
     if (expA.operator != Operator.MINUS && expB.operator != Operator.MINUS) {
-      result.add(new BiOperandExp(Operator.MINUS, expA, expB));
-      result.add(new BiOperandExp(Operator.MINUS, expB, expA));
+      if (expA.polar == 0 && expB.polar == 0) {
+        result.add(new BiOperandExp(Operator.MINUS, expA, expB, 1));
+        result.add(new BiOperandExp(Operator.MINUS, expB, expA, -1));
+      } else {
+        if (expA.polar == 0)
+          result.add(new BiOperandExp(Operator.MINUS, expB, expA, -1));
+        if (expB.polar == 0)
+          result.add(new BiOperandExp(Operator.MINUS, expA, expB, -1));
+      }
     }
 
     // MULTIPLY
     if (expA.operator != Operator.MULTIPLY && expA.operator != Operator.DIVISION
         && expB.operator != Operator.DIVISION
-        && (expB.operator != Operator.MULTIPLY || expA.id < ((BiOperandExp) expB).leftOperand.id))
-      result.add(new BiOperandExp(Operator.MULTIPLY, expA, expB));
+        && (expB.operator != Operator.MULTIPLY || expA.id < ((BiOperandExp) expB).leftOperand.id)) {
+      if (expA.polar == 0 || expB.polar == 0)
+        result.add(new BiOperandExp(Operator.MULTIPLY, expA, expB, expA.polar + expB.polar));
+      else if (expA.polar > 0)
+        result.add(new BiOperandExp(Operator.MULTIPLY, expA, expB, expB.polar));
+    }
 
     // DIVISION
     if (expA.operator != Operator.DIVISION && expB.operator != Operator.DIVISION) {
-      result.add(new BiOperandExp(Operator.DIVISION, expA, expB));
-      result.add(new BiOperandExp(Operator.DIVISION, expB, expA));
+      if (expA.polar == 0 || expB.polar == 0) {
+        result.add(new BiOperandExp(Operator.DIVISION, expA, expB, expA.polar + expB.polar));
+        result.add(new BiOperandExp(Operator.DIVISION, expB, expA, expA.polar + expB.polar));
+      } else {
+        if (expA.polar > 0)
+          result.add(new BiOperandExp(Operator.DIVISION, expA, expB, expB.polar));
+        if (expB.polar > 0)
+          result.add(new BiOperandExp(Operator.DIVISION, expB, expA, expA.polar));
+      }
     }
 
     return result;

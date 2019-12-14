@@ -3,14 +3,18 @@ public class BiOperandExp extends Expression {
   Expression rightOperand;
 
   public BiOperandExp(Operator operator, Expression leftOperand, Expression rightOperand) {
-    this(0, 0, operator, leftOperand, rightOperand);
+    this(0, operator, leftOperand, rightOperand, 0);
   }
 
   public BiOperandExp(int id, Operator operator, Expression leftOperand, Expression rightOperand) {
-    this(id, 0, operator, leftOperand, rightOperand);
+    this(id, operator, leftOperand, rightOperand, 0);
   }
 
-  public BiOperandExp(int id, int polar, Operator operator, Expression leftOperand, Expression rightOperand) {
+  public BiOperandExp(Operator operator, Expression leftOperand, Expression rightOperand, int polar) {
+    this(0, operator, leftOperand, rightOperand, polar);
+  }
+
+  public BiOperandExp(int id, Operator operator, Expression leftOperand, Expression rightOperand, int polar) {
     super(id, polar);
     this.operator = operator;
     this.leftOperand = leftOperand;
@@ -18,7 +22,7 @@ public class BiOperandExp extends Expression {
   }
 
   public BiOperandExp(BiOperandExp another) {
-    this(another.id, another.polar, another.operator, another.leftOperand, another.rightOperand);
+    this(another.id, another.operator, another.leftOperand, another.rightOperand, another.polar);
   }
 
   @Override
