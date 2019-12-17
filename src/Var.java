@@ -28,7 +28,7 @@ public class Var extends Expression {
    * in terms of Unicode as well as ids, starting from 0.
    *
    * @param   n the number of variables returned
-   * @returna a list of sequential variables with length n.
+   * @return  a list of sequential variables with length n.
    */
   public static List<Expression> getVarList(int n) {
     List<Expression> varList = new ArrayList<>();

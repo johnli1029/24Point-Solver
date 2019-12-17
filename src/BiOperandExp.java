@@ -1,3 +1,7 @@
+/**
+ * The {@code BiOperandExp} class represents arithmetic expressions containing a two-operand operator,
+ * which keeps the position of nodes in the expression tree.
+ */
 public class BiOperandExp extends Expression {
   Expression leftOperand;
   Expression rightOperand;
@@ -25,6 +29,12 @@ public class BiOperandExp extends Expression {
     this(another.id, another.operator, another.leftOperand, another.rightOperand, another.polar);
   }
 
+  /**
+   * Return the value of expression evaluated by the substitution list
+   *
+   * @param substitutions the evaluation mapping between variables and values
+   * @return evaluation value
+   */
   @Override
   public double evaluate(int... substitutions) {
     double leftVal = leftOperand.evaluate(substitutions);
@@ -45,6 +55,11 @@ public class BiOperandExp extends Expression {
     }
   }
 
+  /**
+   * Clone method
+   *
+   * @return Deep cloned copy
+   */
   @Override
   public Expression makeCopy() {
     return new BiOperandExp(this);
@@ -66,12 +81,18 @@ public class BiOperandExp extends Expression {
     return left + " " + this.operator + " " + right;
   }
 
+  /**
+   * Returns whether the left operand needs to be covered by brackets
+   */
   private boolean needLeftBracket() {
     return leftOperand.operator != Operator.VAR
         && (operator == Operator.PRODUCT || operator == Operator.DIVISION)
         && (leftOperand.operator == Operator.PLUS || leftOperand.operator == Operator.MINUS);
   }
 
+  /**
+   * Returns whether the left operand needs to be covered by brackets
+   */
   private boolean needRightBracket() {
     return rightOperand.operator != Operator.VAR
         && ((operator == Operator.DIVISION)

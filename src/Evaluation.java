@@ -1,4 +1,18 @@
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Case Testing Program
+ */
 public class Evaluation {
+  /**
+   * Return whether the Expression {@code exp} can be evaluated to result {@code expectedVal}
+   * by the substitution {@code substitutions}
+   *
+   * @param exp           the expression to be evaluated, containing variables
+   * @param expectedVal   the expected evaluation value
+   * @param substitutions the evaluation mapping between variables and values
+   */
   public static boolean test(Expression exp, int expectedVal, int... substitutions) {
     try {
       return Math.abs(exp.evaluate(substitutions) - expectedVal) / expectedVal < 1e-5;
@@ -8,11 +22,15 @@ public class Evaluation {
   }
 
   public static void main(String[] args) {
-    int[] substitutions = {32, 14, 18, 12, 2, 3, 5};
-    int expectedVal = 24;
+    final int[] substitutions = {2, 4, 8, 12, 5};
+    final int expectedVal = 24;
 
-    new FullEnumerator().getAllExpressions(Var.getVarList(substitutions.length)).stream()
+    Set<String> resultSet = new FullEnumerator().getAllExpressions(Var.getVarList(substitutions.length)).stream()
         .filter(expression -> test(expression, expectedVal, substitutions))
-        .forEach(expression -> System.out.println(expression.toString(substitutions) + " = " + expectedVal));
+        .map(expression -> expression.toString(substitutions) + " = " + expectedVal)
+        .collect(Collectors.toSet());
+
+    for (String result : resultSet)
+      System.out.println(result);
   }
 }

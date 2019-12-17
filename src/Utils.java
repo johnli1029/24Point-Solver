@@ -1,8 +1,9 @@
 import java.math.BigInteger;
 
 public class Utils {
-  private Utils() {
-  }
+
+  // Don't instantiate
+  private Utils() {}
 
   private static BigInteger recFac(int start, int n) {
     if (n <= 16) {
