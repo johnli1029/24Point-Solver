@@ -16,9 +16,14 @@
  * a two-operand expression and {@link Var} which stands for a single variable.
  * Expressed in <em>Haskell</em> (without fields <i>id</i>, <i>polar</i>):
  * <p>
- * {@code Exp = BiOperatorExp Exp Exp | Var char}
+ * {@code data Exp
+ *     = Plus Exp Exp
+ *     | Minus Exp Exp
+ *     | Multiply Exp Exp
+ *     | Division Exp Exp
+ *     | Var Char}
  * <p>
- * The Expression structure, as well as all algorithms implemented in this project, is inspired by
+ * The data structure, as well as all algorithms implemented in this project, is inspired by
  * <a href="https://zhuanlan.zhihu.com/p/33998387">王赟 Maigo's articles</a> posted on his blog.
  *
  * @author Haiyue Li
@@ -46,5 +51,11 @@ public abstract class Expression {
    */
   public abstract Expression makeCopy();
 
+  /**
+   * toString method with variables substituted with specific numbers
+   *
+   * @param substitutions
+   * @return
+   */
   public abstract String toString(int... substitutions);
 }
